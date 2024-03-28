@@ -1,3 +1,5 @@
-export const ChatPage = (index) => (
-    <div>chat</div>
+const ChatPage = () => (
+  <div>chat</div>
 );
+
+export default ChatPage;

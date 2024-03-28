@@ -1,4 +1,3 @@
-export const NotFoundPage = (index) => (
-        <a href="/">На главную</a>
-    )
-;
+const NotFoundPage = () => <a href="/">На главную</a>;
+
+export default NotFoundPage;
