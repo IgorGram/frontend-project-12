@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
@@ -7,16 +7,12 @@ const slice = createSlice({
   reducers: {
     login(state, { payload }) {
       localStorage.setItem('user', JSON.stringify(payload));
-      // eslint-disable-next-line no-param-reassign
       state.username = payload.username;
-      // eslint-disable-next-line no-param-reassign
       state.token = payload.token;
     },
     logout(state) {
       localStorage.removeItem('user');
-      // eslint-disable-next-line no-param-reassign
       state.username = null;
-      // eslint-disable-next-line no-param-reassign
       state.token = null;
     },
   },
