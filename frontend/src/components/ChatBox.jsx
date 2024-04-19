@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import NewMessageForm from './NewMessageForm.jsx';
 
 import { useGetChannels } from '../services/channelsApi.js';
 import { useGetMessages } from '../services/messagesApi.js';
@@ -49,7 +50,9 @@ const ChatBox = () => {
           />
         ))}
       </div>
-      <div className="mt-auto px-5 py-3" />
+      <div className="mt-auto px-5 py-3">
+        <NewMessageForm channel={channel} />
+      </div>
     </div>
   );
 };
