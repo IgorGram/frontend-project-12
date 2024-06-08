@@ -1,11 +1,15 @@
 install:
-	npm ci
+	npm ci --legacy-peer-deps
 
 start:
 	npm start
 
 build:
-	npm build
+	rm build -rf
+	npm run build
 
-lint:
-	npx eslint --ext js,jsx --no-eslintrc --config .eslintrc.yml .
+start-frontend:
+	npx react-scripts start -timeout=1000
+
+start-backend:
+	npx start-server -p 5001
