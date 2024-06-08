@@ -31,7 +31,6 @@ const slice = createSlice({
     setCurrentChannel(state, { payload }) {
       const { channelId } = payload;
       state.currentChannelId = channelId;
-      console.log(channelId);
     },
   },
   extraReducers: (builder) => {

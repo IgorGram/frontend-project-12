@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
-
+import { useTranslation } from 'react-i18next';
 import { useAddMessage } from '../services/messagesApi.js';
 
 const NewMessageForm = ({ channel }) => {
+  const { t } = useTranslation();
   const username = useSelector((state) => state.auth.username);
   const inputRef = useRef(null);
   const [
@@ -45,14 +46,14 @@ const NewMessageForm = ({ channel }) => {
           onBlur={f.handleBlur}
           value={f.values.body}
           name="body"
-          aria-label="Новое сообщение"
+          aria-label={t('chat.newMessage')}
           disabled={f.isSubmitting}
           placeholder="Введите сообщение..."
           className="border-0 p-0 ps-2"
         />
         <Button variant="group-vertical" type="submit" disabled={isInvalid}>
           <ArrowRightSquare size={20} />
-          <span className="visually-hidden">Отправлено</span>
+          <span className="visually-hidden">{t('chat.send')}</span>
         </Button>
       </InputGroup>
     </Form>

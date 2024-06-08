@@ -1,5 +1,6 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import ChannelsBox from './ChanneslBox.jsx';
 import ChatBox from './ChatBox.jsx';
 import Modal from './Modal.jsx';
@@ -8,6 +9,7 @@ import { useGetChannels } from '../services/channelsApi.js';
 import { useGetMessages } from '../services/messagesApi.js';
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const { isLoading: isChannelsLoading } = useGetChannels();
   const { isLoading: isMessagesLoading } = useGetMessages();
 
@@ -15,7 +17,7 @@ const ChatPage = () => {
     ? (
       <div className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">Загрузка</span>
+          <span className="visually-hidden">{t('loading')}</span>
         </Spinner>
       </div>
     )
@@ -33,7 +35,6 @@ const ChatPage = () => {
           </div>
         </div>
       </>
-
     );
 };
 

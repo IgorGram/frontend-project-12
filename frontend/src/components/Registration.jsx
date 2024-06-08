@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-// import { useRollbar } from '@rollbar/react';
+import { useTranslation } from 'react-i18next';
 
 import { actions } from '../slices/index.js';
 import routes from '../routes.js';
@@ -15,6 +15,7 @@ import routes from '../routes.js';
 import avatarImages from '../assets/avatar_1.jpg';
 
 const Registration = () => {
+  const { t } = useTranslation();
   const [registrationFailed, setRegistrationFailed] = useState(false);
   const inputRef = useRef();
   const dispatch = useDispatch();
@@ -25,21 +26,20 @@ const Registration = () => {
   }, []);
 
   const validationSchema = yup.object().shape({
-    // TODO: rewrite to setLocale
     username: yup
       .string()
       .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов'),
+      .required('signup.required')
+      .min(3, 'signup.usernameConstraints')
+      .max(20, 'signup.usernameConstraints'),
     password: yup
       .string()
       .trim()
-      .required('Обязательное поле')
-      .min(6, 'Не менее 6 символов'),
+      .required('signup.required')
+      .min(6, 'signup.passMin'),
     confirmPassword: yup
       .string()
-      .test('confirmPassword', 'Пароли должны совпадать', (value, context) => value === context.parent.password),
+      .test('confirmPassword', 'signup.mustMatch', (value, context) => value === context.parent.password),
   });
 
   const formik = useFormik({
@@ -51,7 +51,6 @@ const Registration = () => {
     validationSchema,
     onSubmit: async (values) => {
       setRegistrationFailed(false);
-      console.log('feferf');
       try {
         const res = await axios.post(
           routes.signupPath(),
@@ -60,7 +59,6 @@ const Registration = () => {
         dispatch(actions.login(res.data));
         navigate(routes.chatPagePath());
       } catch (err) {
-        // rollbar.error(err);
         if (!err.isAxiosError) {
           throw err;
         }
@@ -86,30 +84,30 @@ const Registration = () => {
                 <img
                   src={avatarImages}
                   className="rounded-circle"
-                  alt="Регистрация"
+                  alt={t('signup.header')}
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t('signup.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
-                    placeholder="От 3 до 20 символов"
+                    placeholder={t('signup.usernameConstraints')}
                     name="username"
                     id="username"
                     autoComplete="username"
-                    required
-                    ref={inputRef}
                     isInvalid={
                       (formik.errors.username && formik.touched.username)
                       || registrationFailed
                     }
+                    required
+                    ref={inputRef}
                   />
-                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <Form.Label htmlFor="username">{t('signup.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
-                    {formik.errors.username}
+                    {t(formik.errors.username)}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -118,21 +116,21 @@ const Registration = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                    placeholder="Не менее 6 символов"
+                    placeholder={t('signup.passMin')}
                     name="password"
                     id="password"
                     aria-describedby="passwordHelpBlock"
-                    required
-                    autoComplete="new-password"
                     isInvalid={
                       (formik.errors.password && formik.touched.password)
                       || registrationFailed
                     }
+                    required
+                    autoComplete="new-password"
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {formik.errors.password}
+                    {t(formik.errors.password)}
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t('signup.password')}</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -140,23 +138,25 @@ const Registration = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
-                    placeholder="Пароли должны совпадать"
+                    placeholder={t('signup.mustMatch')}
                     name="confirmPassword"
                     id="confirmPassword"
-                    required
-                    autoComplete="new-password"
                     isInvalid={
                       (formik.errors.confirmPassword && formik.touched.confirmPassword)
                       || registrationFailed
                     }
+                    required
+                    autoComplete="new-password"
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {registrationFailed ? 'Такой пользователь уже существует' : formik.errors.confirmPassword}
+                    {registrationFailed
+                      ? t('signup.alreadyExists')
+                      : t(formik.errors.confirmPassword)}
                   </Form.Control.Feedback>
-                  <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                  <Form.Label htmlFor="confirmPassword">{t('signup.confirm')}</Form.Label>
 
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100">Зарегистрироваться</Button>
+                <Button type="submit" variant="outline-primary" className="w-100">{t('signup.submit')}</Button>
               </Form>
             </div>
           </div>

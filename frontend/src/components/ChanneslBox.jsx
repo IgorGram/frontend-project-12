@@ -4,6 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 import { actions } from '../slices/index.js';
 import { useGetChannels } from '../services/channelsApi.js';
 
@@ -14,6 +15,7 @@ const Channel = ({
   handleRemove,
   handleRename,
 }) => {
+  const { t } = useTranslation();
   const variant = isCurrent ? 'secondary' : null;
 
   return (
@@ -32,11 +34,11 @@ const Channel = ({
               {channel.name}
             </Button>
             <Dropdown.Toggle split className="flex-grow-0" variant={variant}>
-              <span className="visually-hidden">11</span>
+              <span className="visually-hidden">{t('channels.menu')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={handleRemove(channel.id)}>Удалить канал</Dropdown.Item>
-              <Dropdown.Item onClick={handleRename(channel.id)}>Переименовать канал</Dropdown.Item>
+              <Dropdown.Item onClick={handleRemove(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleRename(channel.id)}>{t('channels.rename')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )
@@ -57,6 +59,7 @@ const Channel = ({
 };
 
 const ChannelsBox = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { data: channels } = useGetChannels(undefined);
   console.log(channels);
@@ -82,7 +85,7 @@ const ChannelsBox = () => {
   return (
     <>
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t('channels.channels')}</b>
         <Button
           type="button"
           variant="group-vertical"

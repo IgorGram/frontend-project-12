@@ -1,18 +1,21 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import avatarImages from '../assets/avatar.jpg';
 import routes from '../routes';
 import { actions } from '../slices';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
   const formik = useFormik({
     initialValues: {
@@ -43,12 +46,11 @@ const LoginPage = () => {
                 <img
                   src={avatarImages}
                   className="rounded-circle"
-                  alt="картинка"
+                  alt={t('login.header')}
                 />
-
               </div>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('login.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
@@ -58,9 +60,10 @@ const LoginPage = () => {
                     autoComplete="username"
                     isInvalid={authFailed}
                     required
-                    placeholder="Ник"
+                    ref={inputRef}
+                    placeholder={t('login.username')}
                   />
-                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <label htmlFor="username">{t('login.username')}</label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -72,21 +75,21 @@ const LoginPage = () => {
                     autoComplete="current-password"
                     isInvalid={authFailed}
                     required
-                    placeholder="Пароль"
+                    placeholder={t('login.password')}
                   />
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
-                  {authFailed && <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>}
+                  <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
+                  {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('login.authFailed')}</Form.Control.Feedback>}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('login.submit')}</Button>
 
               </Form>
 
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет аккаунта?</span>
+                <span>{t('login.newToChat')}</span>
                 {' '}
-                <Link to="/signup">Регистрация</Link>
+                <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </div>
           </div>

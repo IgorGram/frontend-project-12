@@ -7,6 +7,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../slices/index.js';
@@ -28,6 +29,7 @@ const getValidationSchema = (channels) => yup.object().shape({
 });
 
 const AddChannelForm = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { data: channels } = useGetChannels(undefined);
   const channelNames = channels.map(({ name }) => name);
   const inputRef = useRef(null);
@@ -60,7 +62,7 @@ const AddChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Добавить канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.add')}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -83,10 +85,9 @@ const AddChannelForm = ({ handleClose }) => {
               name="name"
               id="name"
             />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label className="visually-hidden" htmlFor="name">Имя канала</label>
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             <Form.Control.Feedback type="invalid">
-              Ошибка
+              {t(f.errors.name) || t(f.status)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -95,14 +96,14 @@ const AddChannelForm = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отменить
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                Отправить
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>
@@ -113,6 +114,7 @@ const AddChannelForm = ({ handleClose }) => {
 };
 
 const RemoveChannelForm = ({ handleClose }) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [
     deleteChannel,
@@ -131,7 +133,7 @@ const RemoveChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Удалить канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.remove')}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -141,7 +143,7 @@ const RemoveChannelForm = ({ handleClose }) => {
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.confirmation')}</p>
         <div className="d-flex justify-content-end">
           <Button
             className="me-2"
@@ -150,7 +152,7 @@ const RemoveChannelForm = ({ handleClose }) => {
             onClick={handleClose}
             disabled={loading}
           >
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button
             variant="danger"
@@ -158,7 +160,7 @@ const RemoveChannelForm = ({ handleClose }) => {
             onClick={handleRemove}
             disabled={loading}
           >
-            Удалить
+            {t('modals.confirm')}
           </Button>
         </div>
       </BootstrapModal.Body>
@@ -167,6 +169,7 @@ const RemoveChannelForm = ({ handleClose }) => {
 };
 
 const RenameChannelForm = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { data: channels } = useGetChannels(undefined);
   const channelNames = channels.map(({ name }) => name);
   const channelId = useSelector((state) => state.ui.modal.extra?.channelId);
@@ -199,7 +202,7 @@ const RenameChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Переименовать канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.rename')}</BootstrapModal.Title>
         <Button
           variant="close"
           type="button"
@@ -222,10 +225,9 @@ const RenameChannelForm = ({ handleClose }) => {
               name="name"
               id="name"
             />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label className="visually-hidden" htmlFor="name">Имя канала</label>
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             <Form.Control.Feedback type="invalid">
-              Ошибка
+              {t(f.errors.name) || t(f.status)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -234,14 +236,14 @@ const RenameChannelForm = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отменить
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={f.isSubmitting}
               >
-                Отправить
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>
