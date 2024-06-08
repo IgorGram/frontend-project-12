@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { actions } from '../slices/index.js';
 import {
   useAddChannel,
@@ -35,10 +36,7 @@ const AddChannelForm = ({ handleClose }) => {
   const inputRef = useRef(null);
   const [
     addChannel,
-    // TODO: доабавить обработку ошибок
-    { error, isLoading }, // eslint-disable-line
   ] = useAddChannel();
-  // const rollbar = useRollbar();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -53,6 +51,7 @@ const AddChannelForm = ({ handleClose }) => {
       const channel = { name };
       getValidationSchema(channelNames).validateSync({ name });
       addChannel(channel);
+      toast.success(t('channels.created'));
       handleClose();
     },
     validateOnBlur: false,
@@ -118,15 +117,12 @@ const RemoveChannelForm = ({ handleClose }) => {
   const [loading, setLoading] = useState(false);
   const [
     deleteChannel,
-    // TODO: доабавить обработку ошибок
-    { error, isLoading }, // eslint-disable-line
   ] = useDeleteChannel();
   const channelId = useSelector((state) => state.ui.modal.extra?.channelId);
-  // const rollbar = useRollbar();
   const handleRemove = async () => {
     setLoading(true);
     deleteChannel(channelId);
-    // dispatch(actions.setCurrentChannel({ channelId: '1' }));
+    toast.success(t('channels.removed'));
     handleClose();
   };
 
@@ -177,10 +173,7 @@ const RenameChannelForm = ({ handleClose }) => {
   const inputRef = useRef(null);
   const [
     updateChannel,
-    // TODO: доабавить обработку ошибок
-    { error, isLoading }, // eslint-disable-line
   ] = useUpdateChannel();
-  // const rollbar = useRollbar();
   useEffect(() => {
     setTimeout(() => inputRef.current.select());
   }, []);
@@ -193,6 +186,7 @@ const RenameChannelForm = ({ handleClose }) => {
       const data = { name, id: channelId };
       getValidationSchema(channelNames).validateSync({ name });
       updateChannel(data);
+      toast.success(t('channels.renamed'));
       handleClose();
     },
     validateOnBlur: false,

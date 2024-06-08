@@ -62,12 +62,10 @@ const ChannelsBox = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { data: channels } = useGetChannels(undefined);
-  console.log(channels);
 
   const currentChannelId = useSelector((state) => state.ui.currentChannelId);
 
   const handleChooseChannel = (channelId) => () => {
-    console.log(channelId);
     dispatch(actions.setCurrentChannel({ channelId }));
   };
 

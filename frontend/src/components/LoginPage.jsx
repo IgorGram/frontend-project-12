@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import avatarImages from '../assets/avatar.jpg';
 import routes from '../routes';
 import { actions } from '../slices';
@@ -29,8 +30,14 @@ const LoginPage = () => {
         const { from } = location.state || { from: { pathname: routes.chatPagePath() } };
         navigate(from);
       } catch (error) {
+        if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+          return;
+        }
         if (error.response?.status === 401) {
           setAuthFailed(true);
+        } else {
+          toast.error(t('errors.network'));
         }
       }
     },

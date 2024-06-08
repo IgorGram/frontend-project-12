@@ -9,6 +9,7 @@ import reducer, { actions } from './slices/index.js';
 import { channelsApi } from './services/channelsApi.js';
 import { messagesApi } from './services/messagesApi.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import resources from './locales/index.js';
 
 const init = async (socket) => {

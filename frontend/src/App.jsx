@@ -2,6 +2,7 @@ import {
   BrowserRouter, Routes, Route, Outlet, Navigate,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { ToastContainer as Toaster } from 'react-toastify';
 import LoginPage from './components/LoginPage.jsx';
 import Navbar from './components/Navbar';
 import NotFoundPage from './components/NotFoundPage';
@@ -28,6 +29,7 @@ const App = () => (
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
+    <Toaster />
   </BrowserRouter>
 );
 
