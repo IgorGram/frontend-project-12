@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
+import leoProfanity from 'leo-profanity';
 import App from './App.jsx';
 import reducer, { actions } from './slices/index.js';
 import { channelsApi } from './services/channelsApi.js';
@@ -21,6 +22,8 @@ const init = async (socket) => {
       resources,
       fallbackLng: 'ru',
     });
+
+  leoProfanity.add(leoProfanity.getDictionary('ru'));
 
   const store = configureStore({
     reducer,

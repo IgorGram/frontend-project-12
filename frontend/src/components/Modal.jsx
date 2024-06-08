@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 import { actions } from '../slices/index.js';
 import {
   useAddChannel,
@@ -48,7 +49,8 @@ const AddChannelForm = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channelNames),
     onSubmit: async ({ name }) => {
-      const channel = { name };
+      const filteredName = leoProfanity.clean(name);
+      const channel = { name: filteredName };
       getValidationSchema(channelNames).validateSync({ name });
       addChannel(channel);
       toast.success(t('channels.created'));

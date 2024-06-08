@@ -4,6 +4,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 import { useAddMessage } from '../services/messagesApi.js';
 
 const NewMessageForm = ({ channel }) => {
@@ -17,8 +18,10 @@ const NewMessageForm = ({ channel }) => {
   const f = useFormik({
     initialValues: { body: '' },
     onSubmit: async ({ body }) => {
+      console.log(body);
+      const filtered = leoProfanity.clean(body);
       const message = {
-        body,
+        body: filtered,
         channelId: channel.id,
         username,
       };
