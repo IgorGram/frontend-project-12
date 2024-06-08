@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 import i18next from 'i18next';
 import leoProfanity from 'leo-profanity';
 import App from './App.jsx';
@@ -22,6 +23,13 @@ const init = async (socket) => {
       resources,
       fallbackLng: 'ru',
     });
+
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const rollbarConfig = {
+    accessToken: process.env.ROLLBAR_TOKEN,
+    environment: isProduction,
+  };
 
   leoProfanity.add(leoProfanity.getDictionary('ru'));
 
@@ -63,9 +71,13 @@ const init = async (socket) => {
 
   return (
     <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <App />
-      </I18nextProvider>
+      <RollBarProvider config={rollbarConfig}>
+        <ErrorBoundary>
+          <I18nextProvider i18n={i18n}>
+            <App />
+          </I18nextProvider>
+        </ErrorBoundary>
+      </RollBarProvider>
     </Provider>
   );
 };
