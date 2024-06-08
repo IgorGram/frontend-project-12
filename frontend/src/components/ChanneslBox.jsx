@@ -35,8 +35,8 @@ const Channel = ({
               <span className="visually-hidden">11</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={handleRemove(channel.id)}>22</Dropdown.Item>
-              <Dropdown.Item onClick={handleRename(channel.id)}>33</Dropdown.Item>
+              <Dropdown.Item onClick={handleRemove(channel.id)}>Удалить канал</Dropdown.Item>
+              <Dropdown.Item onClick={handleRename(channel.id)}>Переименовать канал</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )
@@ -59,11 +59,24 @@ const Channel = ({
 const ChannelsBox = () => {
   const dispatch = useDispatch();
   const { data: channels } = useGetChannels(undefined);
+  console.log(channels);
 
   const currentChannelId = useSelector((state) => state.ui.currentChannelId);
 
   const handleChooseChannel = (channelId) => () => {
+    console.log(channelId);
     dispatch(actions.setCurrentChannel({ channelId }));
+  };
+
+  const handleAddChannel = () => {
+    dispatch(actions.openModal({ type: 'addChannel' }));
+  };
+
+  const handleRemoveChannel = (channelId) => () => {
+    dispatch(actions.openModal({ type: 'removeChannel', extra: { channelId } }));
+  };
+  const handleRenameChannel = (channelId) => () => {
+    dispatch(actions.openModal({ type: 'renameChannel', extra: { channelId } }));
   };
 
   return (
@@ -74,6 +87,7 @@ const ChannelsBox = () => {
           type="button"
           variant="group-vertical"
           className="p-0 text-primary"
+          onClick={handleAddChannel}
         >
           <PlusSquare size={20} />
           <span className="visually-hidden">+</span>
@@ -89,7 +103,8 @@ const ChannelsBox = () => {
             channel={channel}
             isCurrent={channel.id === currentChannelId}
             handleChoose={handleChooseChannel(channel.id)}
-
+            handleRemove={handleRemoveChannel}
+            handleRename={handleRenameChannel}
           />
         ))}
       </ul>

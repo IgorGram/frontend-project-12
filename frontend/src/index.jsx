@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { io } from 'socket.io-client';
 import App from './App.jsx';
-import reducer from './slices/index.js';
+import reducer, { actions } from './slices/index.js';
 import { channelsApi } from './services/channelsApi.js';
 import { messagesApi } from './services/messagesApi.js';
 
@@ -22,6 +22,30 @@ const store = configureStore({
 socket.on('newMessage', (payload) => {
   store.dispatch(messagesApi.util.updateQueryData('getMessages', undefined, (draftMessages) => {
     draftMessages.push(payload);
+  }));
+});
+
+socket.on('newChannel', (payload) => {
+  store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draftChannels) => {
+    draftChannels.push(payload);
+  }));
+});
+
+socket.on('removeChannel', (payload) => {
+  store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draftChannels) => {
+    const newChannels = draftChannels.filter((channel) => channel.id !== payload.id);
+    const state = store.getState();
+    if (state.ui.currentChannelId === payload.id) {
+      store.dispatch(actions.setCurrentChannel({ channelId: state.ui.defaultChannelId }));
+    }
+    return newChannels;
+  }));
+});
+
+socket.on('renameChannel', (payload) => {
+  store.dispatch(channelsApi.util.updateQueryData('getChannels', undefined, (draftChannels) => {
+    const channel = draftChannels.find((item) => item.id === payload.id);
+    channel.name = payload.name;
   }));
 });
 
