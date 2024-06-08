@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage.jsx';
 import Navbar from './components/Navbar';
 import NotFoundPage from './components/NotFoundPage';
 import ChatPage from './components/ChatPage';
+import Registration from './components/Registration.jsx';
 import routes from './routes.js';
 
 const PrivateOutlet = () => {
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="" element={<ChatPage />} />
         </Route>
         <Route path={routes.loginPagePath()} element={<LoginPage />} />
+        <Route path={routes.signupPagePath()} element={<Registration />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

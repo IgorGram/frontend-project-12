@@ -60,6 +60,7 @@ const LoginPage = () => {
                     required
                     placeholder="Ник"
                   />
+                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -73,6 +74,7 @@ const LoginPage = () => {
                     required
                     placeholder="Пароль"
                   />
+                  <Form.Label htmlFor="password">Пароль</Form.Label>
                   {authFailed && <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>}
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
